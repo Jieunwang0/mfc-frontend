@@ -1,0 +1,37 @@
+{
+  "root": true,
+  "plugins": ["prettier"],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "ignorePatterns": ["node_modules/"],
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "next/core-web-vitals",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
+    "no-useless-catch": "off",
+    "jsx-a11y/label-has-associated-control": [
+      2,
+      {
+        "some": ["nesting", "id"]
+      }
+    ],
+    "eqeqeq": "off",
+    "react/button-has-type": "off",
+    "react/function-component-definition": [
+      3,
+      {
+        "namedcomponents": ["function-declaration", "function-expression", "arrow-function"]
+      }
+    ]
+  }
+}
