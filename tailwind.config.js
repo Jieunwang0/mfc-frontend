@@ -7,10 +7,39 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      animation: {
+        twinkle1: "twinkling 0.5s infinite",
+        twinkle2: "twinkling 1.1s infinite",
+        twinkle3: "twinkling 1.3s infinite",
+        twinkle4: "twinklingWithoutBoxShadow 3s infinite",
+      },
+      keyframes: {
+        twinkling: {
+          "0%, 100%": {
+            boxShadow: "0 0 10px 0px rgb(255, 255, 255, 0.1)",
+          },
+          "50%": {
+            boxShadow: "0 0 10px 2px rgb(255, 255, 255, 0.6)",
+          },
+        },
+        twinklingWithoutBoxShadow: {
+          "0%": {
+            backgroundColor: "#ffffff",
+            boxShadow: "0 0 10px 0px rgba(255, 255, 255, 1)",
+          },
+          "20%": {
+            backgroundColor: "#ffc4c4",
+            boxShadow: "0 0 10px 0px rgba(255, 196, 196, 1)",
+          },
+          "80%": {
+            backgroundColor: "#c4cfff",
+            boxShadow: "0 0 10px 0px rgba(196, 207, 255, 1)",
+          },
+          "100%": {
+            backgroundColor: "#ffffff",
+            boxShadow: "0 0 10px 0px rgba(255, 255, 255, 0.2)",
+          },
+        },
       },
     },
   },

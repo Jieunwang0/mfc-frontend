@@ -1,12 +1,13 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import StarrySky from "@/components/StarryskyLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: {
     template: "%s | My Cinema",
-    default: "Load.."
+    default: "Load..",
   },
   description: "Its Your Own Cinema Archive Web",
 };
@@ -14,7 +15,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>   
+        <StarrySky position='fixed' /> 
+        {children}
+      </body>
     </html>
   );
 }
