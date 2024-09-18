@@ -39,7 +39,7 @@ export default function StarrySky() {
     },
     []);
   return (
-    <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute inset-0 overflow-hidden z-[-1]">
       {stars.map((star) => (
         <div
           key={star.id}
