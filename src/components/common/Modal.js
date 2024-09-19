@@ -2,6 +2,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { closeModal, openModal, selectModalState } from "@/lib/slices/modalSlice";
 import { useState } from "react";
+import Search from "@/components/Search";
 
 const AddModal = ({ addMovie, addEvent, onClose }) => {
   const dispatch = useDispatch();
@@ -58,16 +59,9 @@ const AddMovie = ({ search, title, history_time, country, keyword, content, onCl
       <button type="button" onClick={onClose}>
         Close
       </button>
-     {/* <div>
-        <label>Search</label>
-         <input
-            type="text"
-            name="search"
-            value={formData.search}
-            onChange={handleChange}
-            placeholder="Search for a movie..."
-          />
-      </div> */}
+
+      <Search />
+
       {/* Search 창에서 검색-클릭해서 데이터 들어오면 하단 폼 형식이 뜸
         아래의 form 형식은 이 데이터의 유무에 따라 false면 빈페이지 아이콘을 보여주기로 함 true면 form  */}
       <form onSubmit={submitBtn}>
