@@ -3,6 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { closeModal, openModal, selectModalState } from "@/lib/slices/modalSlice";
 import { useState } from "react";
 import Search from "@/components/Search";
+import welcomeStep1 from "public/image/modal_add.png";
+import welcomeStep2 from "public/image/orbit.png";
+import welcomeStep3 from "public/image/modal_dot_line.png";
+import welcomeStep4 from "public/image/modal_line.png";
 
 const AddModal = ({ addMovie, addEvent, onClose }) => {
   const dispatch = useDispatch();
@@ -10,7 +14,7 @@ const AddModal = ({ addMovie, addEvent, onClose }) => {
   const handleAddMovieClick = () => {
     dispatch(
       openModal({
-        modalType: "ADD_MOVIE_MODAL",    
+        modalType: "ADD_MOVIE_MODAL",
       })
     );
   };
@@ -117,7 +121,6 @@ const AddMovie = ({ search, title, history_time, country, keyword, content, onCl
   );
 };
 
-
 // Form으로 보내야 함
 const AddEvent = ({ search, title, history_time, country, keyword, content, onClose }) => {
   const [formData, setFormData] = useState({
@@ -170,13 +173,7 @@ const AddEvent = ({ search, title, history_time, country, keyword, content, onCl
         </div>
         <div>
           <label>배경 국가</label>
-          <input
-            type="text"
-            name="country"
-            value={formData.country}
-            onChange={handleChange}
-            placeholder="Event Tag"
-          />
+          <input type="text" name="country" value={formData.country} onChange={handleChange} placeholder="Event Tag" />
         </div>
         <div>
           <label>키워드</label>
@@ -198,20 +195,46 @@ const AddEvent = ({ search, title, history_time, country, keyword, content, onCl
 };
 
 // 최초 로그인 여부 체크해서 단 한번 보여주는 웰컴 모달 구현 필요
-const WelcomeModal = ({ title, image, content, onClose }) => (
-  <div>
-    <h2>{title}</h2>
-    <button onClick={onClose}>Close</button>
-    <div>{image}</div>
-    <p>{content}</p>
-  </div>
-);
+const WelcomeModal = ({ onClose }) => {
+  const image = [welcomeStep1, welcomeStep2, welcomeStep3, welcomeStep4];
+  const content = ["A", "B", "C", "D"];
+
+  const [slidepage, setSlidePage] = useState(0);
+
+  const prevSlide = () => {
+    if (slidepage > 0) {
+      setSlidePage(slidepage - 1);
+    }
+  };
+
+  const nextSlide = () => {
+    if (slidepage < content.length - 1) {
+      setSlidePage(slidepage + 1);
+    }
+  };
+  return (
+    <div>
+      <div>
+        <div>
+          {slidepage > 0 && <button onClick={prevSlide}>이전 슬라이드</button>}
+          {slidepage < content.length - 1 ? (
+            <button onClick={nextSlide}>다음 슬라이드</button>
+          ) : (
+            <button onClick={onClose}>X</button>
+          )}
+        </div>
+        <h2>{`Step ${slidepage + 1}`}</h2>
+        <img src={image[slidepage].src} alt={`welcome modal image ${slidepage}`} />
+        <p>{content[slidepage]}</p>
+      </div>
+    </div>
+  );
+};
 
 const ModalManager = () => {
-  
   const dispatch = useDispatch();
-  
-// 외부 클릭시에도 모달 닫히는 코드 추가 구현 필요
+
+  // 외부 클릭시에도 모달 닫히는 코드 추가 구현 필요
 
   const { isOpen, modalType, modalProps } = useSelector(selectModalState);
 
