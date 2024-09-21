@@ -1,14 +1,14 @@
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import SearchIcon from "/public/image/magnifying_glass.png";
+import SearchIcon from 'public/image/manimirror.svg'
 
 const Search = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   useEffect(() => {
     const fetchMockdata = async () => {
-      const res = await fetch("./api/mock");
+      const res = await fetch("/api/mock");
       const data = await res.json();
       setSearchResult(data.movies);
     };
@@ -23,7 +23,7 @@ const Search = () => {
   );
 
   return (
-    <div className="p-4">
+    <div className="p-4 ">
       <div className="flex items-center bg-neutral-100 py-[8px] pl-[10px] pr-[36px] gap-3">
         <Image src={SearchIcon} alt="search icon" style={{ width: 24, height: 24 }} />
         <input
@@ -35,7 +35,7 @@ const Search = () => {
           className="w-full text-sm bg-transparent outline-none placeholder:text-neutral-400"
         />
       </div>
-      <div>
+      <div className="text-white">
         {searchKeyword.length > 0 ? (
           <ul>
             {filteredSearchResult.map((movie) => (
