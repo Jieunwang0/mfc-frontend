@@ -3,8 +3,9 @@
 @tailwind utilities;
 
 :root {
+  height: 100%;
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
+  --background-start-rgb: 0, 0, 0;
   --background-end-rgb: 255, 255, 255;
 }
 
@@ -17,17 +18,32 @@
 }
 
 body {
+  height: 100%; margin: 0;
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: linear-gradient(#000000, #0c012b )
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* scroll-bar style code */
+/* 비표준이라 배포 전에 테스트 필요 */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ececec;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background: #656565;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
