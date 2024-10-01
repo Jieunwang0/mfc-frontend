@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from "react";
 
-const eraDefinitions = {
-  C: {
-    centuryTypes: {
-      early: { start: "000000", end: "200000" },
-      mid: { start: "210000", end: "600000" },
-      late: { start: "610000", end: "990000" },
-    },
-    validate: (centuryValue, centuryType) => {
-      return centuryValue && centuryType;
-    },
-  },
+const centuryTypes = {
+  early: { start: "000000", end: "200000" },
+  mid: { start: "210000", end: "600000" },
+  late: { start: "610000", end: "990000" },
 };
 
 const FormEventDateBg = React.memo(({ onDateChange }) => {
@@ -41,7 +34,7 @@ const FormEventDateBg = React.memo(({ onDateChange }) => {
           break;
         case "C":
           const centuryYear = parseInt(centuryValue, 10) - 1;
-          const { start: startCode, end: endCode } = eraDefinitions.C.centuryTypes[centuryType] || {
+          const { start: startCode, end: endCode } = centuryTypes[centuryType] || {
             start: "10000",
             end: "00000",
           };

@@ -10,7 +10,7 @@ export default function AddEvent() {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
-    tag: "",
+    tag: [],
     beginTimeBg: "",
     endTimeBg: "",
   });
@@ -52,7 +52,7 @@ export default function AddEvent() {
 
         // await sendToDatabase(dbData); 여기 db 보내기
 
-        onClose();
+        // onClose();
       } catch (error) {
         alert(error.message);
       }

@@ -1,23 +1,58 @@
-import React, { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
+import { isEmptyValue, sanitizeHashTag } from "@/lib/hashTag";
 
 const FormEventTag = React.memo(({ onChange }) => {
-   const [tag, setTag] = useState("");
+ const [inputTag, setInputTag] = useState("");
+  const [hashTags, setHashTags] = useState([]);
 
-   const handleChange = (e) => {
-     setTag(e.target.value);
-     onChange(e.target.value);
-   };
+  useEffect(() => {
+    onChange(hashTags);
+  }, [hashTags, onChange]);
+
+  const handleHashTag = (e) => {
+    if (!["Enter", "Space", "NumpadEnter"].includes(e.code)) return;
+
+    let newHashTag = sanitizeHashTag(e.currentTarget.value);
+
+    if (!isEmptyValue(newHashTag) && !hashTags.includes(newHashTag) && hashTags.length < 10) {
+      setHashTags((prevHashTags) => Array.from(new Set([...prevHashTags, newHashTag])));
+      setInputTag("");
+    }
+  };
+
+  const handleEnterKey = (e) => {
+    if (!["Enter", "NumpadEnter"].includes(e.code)) return;
+    e.preventDefault();
+
+    const regExp = /^[a-z|A-Z|가-힣|ㄱ-ㅎ|ㅏ-ㅣ|0-9| \t|]+$/g;
+    if (!regExp.test(e.currentTarget.value)) setInputTag("");
+  };
+
+  const handleChange = (e) => {
+    setInputTag(e.target.value);
+  };
+
+  const handleDeleteHashTag = (hashTagToDelete) => {
+    setHashTags(hashTags.filter((hashTag) => hashTag !== hashTagToDelete));
+  };
 
   return (
-    <div className="flex items-center justify-start w-full py-4 border-b-[1px]">
-      <label className="w-1/3 text-white font-semibold text-[20px]">태그</label>
+    <div>
+      <label>태그</label>
+      <div className="hash-tag-container">
+        {hashTags.map((hashTag) => (
+          <div key={hashTag} className="hash-tag">
+            {hashTag}
+            <button onClick={() => handleDeleteHashTag(hashTag)}>X</button>
+          </div>
+        ))}
+      </div>
       <input
-        type="text"
-        name="tag"
-        value={tag}
+        value={inputTag}
         onChange={handleChange}
-        className="w-2/3 px-2 py-1 rounded-md"
-        placeholder="Tag"
+        onKeyUp={handleHashTag}
+        onKeyDown={handleEnterKey}
       />
     </div>
   );
