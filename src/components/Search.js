@@ -4,11 +4,10 @@ import { useEffect, useState } from "react";
 import SearchIcon from "public/image/manimirror.svg";
 import emptyIcon from "public/image/emptymirror.svg";
 
-const Search = () => {
-  // const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+const Search = ({onChange}) => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-
+  
   useEffect(() => {
     const fetchMockdata = async () => {
       const res = await fetch("/api/mock");
@@ -17,6 +16,7 @@ const Search = () => {
     };
     fetchMockdata();
   }, []);
+  
   const handleSearch = (e) => {
     setSearchKeyword(e);
   };
@@ -24,8 +24,11 @@ const Search = () => {
   const filteredSearchResult = searchResult.filter((movie) =>
     movie.title.toLowerCase().includes(searchKeyword.toLowerCase())
   );
-
-  return (
+    const handleMovieSelect = (movie) => {
+      onChange(movie);
+      setSearchKeyword("");
+    };
+ return (
     <div className="w-full py-5 h-5/6">
       <div className="rounded-md bg-neutral-100 py-[8px] pl-[10px] pr-[36px] gap-3 flex justify-center z-20">
         <div className="flex items-center w-full">
@@ -45,9 +48,13 @@ const Search = () => {
         {searchKeyword.length > 0 ? (
           <ul className="grid justify-start w-full grid-cols-3 gap-4 mt-5">
             {filteredSearchResult.map((movie) => (
-              <li key={movie.id} className="flex-row">
-                <div className="w-[146px] h-[190px] bg-white"></div>
-                <div className="">{movie.title} </div>
+              <li 
+                key={movie.id} 
+                className="flex-row cursor-pointer" 
+                onClick={() => handleMovieSelect(movie)}
+              >
+                <div className="">{movie.posterURL}</div>
+                <div className="">{movie.title}</div>
                 <div className="">{movie.directorName}</div>
                 <div className="">{movie.startYear}</div>
               </li>
@@ -67,4 +74,5 @@ const Search = () => {
     </div>
   );
 };
+
 export default Search;

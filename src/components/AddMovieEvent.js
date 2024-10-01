@@ -1,8 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 import Search from "@/components/Search";
+import FormEventDateBg from "./FormEventDateBg";
+import FormEventContent from "./FormEventContent";
+import FormEventTag from "./FormEventTag";
 
 export default function AddMovieEvent() {
   const router = useRouter();
@@ -10,66 +13,101 @@ export default function AddMovieEvent() {
   const onClose = () => {
     router.back();
   };
-
+  
   const [formData, setFormData] = useState({
     title: "",
+    content: "",
+    posterURL: "",
+    tag: [],
+    beginTimeBg: "",
+    endTimeBg: "",
+    directorName: "",
+    releaseDate: "",
     startYear: "",
     endYear: "",
-    keyword: "",
-    content: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  const handleSearchChange = useCallback((selectedMovie) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      title: selectedMovie.title,
+      posterURL: selectedMovie.posterURL,
+      directorName: selectedMovie.directorName,
+      startYear: selectedMovie.startYear,
+      endYear: selectedMovie.endYear,
+      releaseDate: selectedMovie.releaseDate,
+      tag: selectedMovie.tag,
+    }));
+  }, []);
 
-  const submitBtn = (e) => {
-    e.preventDefault();
-    // 이후 api 들어오면 수정하고 여기에 데이터 보내는 로직 추가
-    console.log("submitted modal form data!!:", formData);
-    onClose();
-  };
+  const handleDateChange = useCallback(({ beginTimeBg, endTimeBg }) => {
+    setFormData((prevData) => ({ ...prevData, beginTimeBg, endTimeBg }));
+  }, []);
+  const handleTagChange = useCallback((Tag) => {
+    setFormData((prevData) => ({ ...prevData, tag: Tag }));
+  }, []);
+  const handleContentChange = useCallback((Content) => {
+    setFormData((prevData) => ({ ...prevData, content: Content }));
+  }, []);
+
+  const submitBtn = useCallback(
+    async (e) => {
+      e.preventDefault();
+      const { title, content, tag, beginTimeBg, endTimeBg, releaseDate, directorName, startYear, endYear, posterURL } = formData;
+
+      if (!content || !tag || !beginTimeBg) {
+        alert("필수 입력값을 모두 작성해주세요.");
+        return;
+      }
+
+      try {
+        const dbData = {
+          title,
+          content,
+          tag,
+          beginTimeBg,
+          endTimeBg,
+          releaseDate,
+          directorName,
+          startYear,
+          endYear,
+          posterURL,
+        };
+
+        console.log("data for DB : ", dbData);
+
+        // await sendToDatabase(dbData); 여기 db 보내기
+
+        // onClose();
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    [formData, onClose]
+  );
+
   return (
     <div className="relative flex justify-center w-full h-full backdrop-blur-sm bg-gray-100/10 backdrop-brightness-150">
       <div className="flex justify-center w-2/3">
-        <Search />
+        <Search onChange={handleSearchChange} />
       </div>
-
-      {/* <form onSubmit={submitBtn} className="text-white">
+      <form onSubmit={submitBtn} className="text-white">
         <div>
           <label>#영화 정보</label>
+          <div>{formData.posterURL}</div>
+          <div>{formData.title}</div>
+          <div>{formData.directorName}</div>
+          <div>{formData.releaseDate}</div>
         </div>
-        <div>
-          <label>시대적 배경</label>
-          <input type="radio" name="startYear" value={formData.startYear} onChange={handleChange} /> startYear
-        </div>
-        <div>
-          <label>한줄평</label>
-          <textarea
-            name="content"
-            maxLength={25}
-            value={formData.content}
-            onChange={handleChange}
-            placeholder="한줄평을 간략히 작성해주세요. (최대 25자)"
-          />
-        </div>
-        <div>
-          <label>키워드</label>
-          <input
-            type="text"
-            name="keyword"
-            value={formData.keyword}
-            onChange={handleChange}
-            placeholder="Keyword Tag"
-          />
-        </div>
-        <div>
-          <button type="submit" onSubmit={submitBtn}>
+        <FormEventDateBg onDateChange={handleDateChange} />
+        <FormEventContent onChange={handleContentChange} />
+        <FormEventTag onChange={handleTagChange} />
+        <div className="flex justify-center py-4">
+          <button type="submit" className="w-[200px] py-1 text-black rounded-md bg-slate-200">
             등록하기
           </button>
         </div>
-      </form> */}
+      </form>
     </div>
   );
 }
