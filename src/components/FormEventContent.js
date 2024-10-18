@@ -1,11 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 
 const FormEventContent = React.memo(({ onChange }) => {
-  const [content, setContent] = useState("");
-
-  const handleChange = (e) => {
-    setContent(e.target.value);
-    onChange(e.target.value);
+    const handleChange = (e) => {
+    onChange('content', e.target.value);
   };
   return (
     <div className="flex items-center justify-start w-full py-4 border-b-[1px]">
@@ -13,7 +10,6 @@ const FormEventContent = React.memo(({ onChange }) => {
       <textarea
         name="content"
         maxLength={40}
-        value={content}
         onChange={handleChange}
         className="w-2/3 px-2 py-1 rounded-md"
         placeholder="사건을 간략히 설명해주세요. (최대 40자)"

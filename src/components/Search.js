@@ -10,9 +10,16 @@ const Search = ({onChange}) => {
   
   useEffect(() => {
     const fetchMockdata = async () => {
-      const res = await fetch("/api/mock");
-      const data = await res.json();
-      setSearchResult(data.movies);
+      try {
+        const res = await fetch("/api/mock");
+        if (!res.ok) {
+          throw new Error("mockapi res NOT OK");
+        }
+        const data = await res.json();
+        setSearchResult(data.movies);
+      } catch (error) {
+        console.error("Failed to fetch movies : ", error);
+      }
     };
     fetchMockdata();
   }, []);
@@ -48,11 +55,7 @@ const Search = ({onChange}) => {
         {searchKeyword.length > 0 ? (
           <ul className="grid justify-start w-full grid-cols-3 gap-4 mt-5">
             {filteredSearchResult.map((movie) => (
-              <li 
-                key={movie.id} 
-                className="flex-row cursor-pointer" 
-                onClick={() => handleMovieSelect(movie)}
-              >
+              <li key={movie.id} className="flex-row cursor-pointer" onClick={() => handleMovieSelect(movie)}>
                 <div className="">{movie.posterURL}</div>
                 <div className="">{movie.title}</div>
                 <div className="">{movie.directorName}</div>

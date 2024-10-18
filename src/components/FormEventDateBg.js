@@ -16,40 +16,40 @@ const FormEventDateBg = React.memo(({ onDateChange }) => {
   const [centuryValue, setCenturyValue] = useState("");
   const [centuryType, setCenturyType] = useState("");
 
-  const handleRadioChange = (e) => {
-    setRadioSelection(e.target.value);
+
+  const getFormattedDate = () => {
+    let beginTimeBg, endTimeBg;
+
+    switch (radioSelection) {
+      case "A":
+        beginTimeBg = `${year}${month.padStart(2, "0")}${day.padStart(2, "0")}`;
+        endTimeBg = beginTimeBg;
+        break;
+      case "B":
+        beginTimeBg = `${startYear}0000`;
+        endTimeBg = endYear ? `${endYear}0000` : beginTimeBg;
+        break;
+      case "C":
+        const centuryYear = parseInt(centuryValue, 10) - 1;
+        const { start: startCode, end: endCode } = centuryTypes[centuryType] || {
+          start: "10000",
+          end: "00000",
+        };
+        beginTimeBg = `${centuryYear}${startCode}`;
+        endTimeBg = `${centuryYear}${endCode}`;
+        break;
+      default:
+        return;
+    }
+
+
+    onDateChange({ begin: beginTimeBg, end: endTimeBg });
   };
 
+
   useEffect(() => {
-    const getFormattedDate = () => {
-      let beginTimeBg, endTimeBg;
-      switch (radioSelection) {
-        case "A":
-          beginTimeBg = `${year}${month.padStart(2, "0")}${day.padStart(2, "0")}`;
-          endTimeBg = beginTimeBg;
-          break;
-        case "B":
-          beginTimeBg = `${startYear}0000`;
-          endTimeBg = endYear ? `${endYear}0000` : beginTimeBg;
-          break;
-        case "C":
-          const centuryYear = parseInt(centuryValue, 10) - 1;
-          const { start: startCode, end: endCode } = centuryTypes[centuryType] || {
-            start: "10000",
-            end: "00000",
-          };
-
-          beginTimeBg = `${centuryYear}${startCode}`;
-          endTimeBg = `${centuryYear}${endCode}`;
-          break;
-        default:
-          return;
-      }
-      onDateChange({ beginTimeBg, endTimeBg });
-    };
-
     getFormattedDate();
-  }, [radioSelection, year, month, day, startYear, endYear, centuryValue, centuryType, onDateChange]);
+  }, [radioSelection, year, month, day, startYear, endYear, centuryValue, centuryType]);
 
   return (
     <div className="flex items-center justify-start w-full py-4 border-b-[1px]">
@@ -63,7 +63,7 @@ const FormEventDateBg = React.memo(({ onDateChange }) => {
                 name="radioSelection"
                 value={option}
                 checked={radioSelection === option}
-                onChange={handleRadioChange}
+                onChange={() => setRadioSelection(option)}
               />
               {option === "A" ? "년/월/일" : option === "B" ? "년대" : "세기"}
             </label>
@@ -76,7 +76,6 @@ const FormEventDateBg = React.memo(({ onDateChange }) => {
           <div className="flex items-center">
             <input
               type="text"
-              name="year"
               value={year}
               onChange={(e) => setYear(e.target.value)}
               placeholder="*"
@@ -87,7 +86,6 @@ const FormEventDateBg = React.memo(({ onDateChange }) => {
             년
             <input
               type="text"
-              name="month"
               value={month}
               onChange={(e) => setMonth(e.target.value)}
               placeholder="option"
@@ -97,7 +95,6 @@ const FormEventDateBg = React.memo(({ onDateChange }) => {
             월
             <input
               type="text"
-              name="day"
               value={day}
               onChange={(e) => setDay(e.target.value)}
               placeholder="option"
@@ -108,13 +105,11 @@ const FormEventDateBg = React.memo(({ onDateChange }) => {
           </div>
         </div>
       )}
-
       {radioSelection === "B" && (
         <div className="py-4 text-white">
           <div className="flex items-center">
             <input
               type="text"
-              name="startYear"
               value={startYear}
               onChange={(e) => setStartYear(e.target.value)}
               placeholder="*"
@@ -125,7 +120,6 @@ const FormEventDateBg = React.memo(({ onDateChange }) => {
             <div>연대 ~</div>
             <input
               type="text"
-              name="endYear"
               value={endYear}
               onChange={(e) => setEndYear(e.target.value)}
               placeholder="option"
@@ -136,13 +130,11 @@ const FormEventDateBg = React.memo(({ onDateChange }) => {
           </div>
         </div>
       )}
-
       {radioSelection === "C" && (
         <div className="flex justify-start py-4 text-white">
           <div>
             <input
               type="text"
-              name="centuryValue"
               value={centuryValue}
               onChange={(e) => setCenturyValue(e.target.value)}
               placeholder="*"
@@ -160,7 +152,7 @@ const FormEventDateBg = React.memo(({ onDateChange }) => {
                   name="centuryType"
                   value={type}
                   checked={centuryType === type}
-                  onChange={(e) => setCenturyType(e.target.value)}
+                  onChange={() => setCenturyType(type)}
                 />
                 {type === "early" ? "초" : type === "mid" ? "중" : "후"}
               </label>

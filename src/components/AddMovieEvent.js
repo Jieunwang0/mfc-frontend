@@ -76,7 +76,7 @@ export default function AddMovieEvent() {
 
         console.log("data for DB : ", dbData);
 
-        // await sendToDatabase(dbData); 여기 db 보내기
+        // await sendToDatabase(dbData); 함수 만들고 db 보내기
 
         // onClose();
       } catch (error) {
@@ -88,26 +88,29 @@ export default function AddMovieEvent() {
 
   return (
     <div className="relative flex justify-center w-full h-full backdrop-blur-sm bg-gray-100/10 backdrop-brightness-150">
-      <div className="flex justify-center w-2/3">
-        <Search onChange={handleSearchChange} />
-      </div>
-      <form onSubmit={submitBtn} className="text-white">
-        <div>
-          <label>#영화 정보</label>
-          <div>{formData.posterURL}</div>
-          <div>{formData.title}</div>
-          <div>{formData.directorName}</div>
-          <div>{formData.releaseDate}</div>
+      {formData.title ? (
+        <form onSubmit={submitBtn} className="text-white">
+          <div>
+            <label>#영화 정보</label>
+            <div>{formData.posterURL}</div>
+            <div>{formData.title}</div>
+            <div>{formData.directorName}</div>
+            <div>{formData.releaseDate}</div>
+          </div>
+          <FormEventDateBg onDateChange={handleDateChange} />
+          <FormEventContent onChange={handleContentChange} />
+          <FormEventTag onChange={handleTagChange} />
+          <div className="flex justify-center py-4">
+            <button type="submit" className="w-[200px] py-1 text-black rounded-md bg-slate-200">
+              등록하기
+            </button>
+          </div>
+        </form>
+      ) : (
+        <div className="flex justify-center w-2/3">
+          <Search onChange={handleSearchChange} />
         </div>
-        <FormEventDateBg onDateChange={handleDateChange} />
-        <FormEventContent onChange={handleContentChange} />
-        <FormEventTag onChange={handleTagChange} />
-        <div className="flex justify-center py-4">
-          <button type="submit" className="w-[200px] py-1 text-black rounded-md bg-slate-200">
-            등록하기
-          </button>
-        </div>
-      </form>
+      )}
     </div>
   );
 }
