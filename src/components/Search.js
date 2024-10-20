@@ -1,9 +1,10 @@
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import SearchIcon from "public/image/manimirror.svg";
-import emptyIcon from "public/image/emptymirror.svg";
-
+// import SearchIcon from "public/image/manimirror.svg";
+// import emptyIcon from "public/image/emptymirror.svg";
+import { Manimirror } from "./svg/Airbnb";
+import { Emptymirrior } from "./svg/Airbnb";
 const Search = ({onChange}) => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -39,7 +40,7 @@ const Search = ({onChange}) => {
     <div className="w-full py-5 h-5/6">
       <div className="rounded-md bg-neutral-100 py-[8px] pl-[10px] pr-[36px] gap-3 flex justify-center z-20">
         <div className="flex items-center w-full">
-          <Image src={SearchIcon} alt="검색" style={{ width: 24, height: 24 }} />
+          <Manimirror style={{ width: 24, height: 24 }} />
           <input
             type="text"
             name="search"
@@ -67,7 +68,7 @@ const Search = ({onChange}) => {
           <div className="flex items-center justify-center w-full h-full mt-4">
             <div className="flex-row">
               <div className="flex justify-center pb-4">
-                <Image src={emptyIcon} alt="검색 결과 없음" style={{ width: 100, height: 100 }} />
+                <Emptymirrior alt="검색 결과 없음" style={{ width: 100, height: 100 }} />
               </div>
               <div className="font-semibold text-white text-[25px]">앗! 검색 내용이 없어요.</div>
             </div>
