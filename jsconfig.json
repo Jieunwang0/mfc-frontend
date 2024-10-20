@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "src",
     "paths": {
-      "@/*": ["./src/*"],
-      "@/mock/*": ["./mock/*"],
-      "@/components/*": ["./components/*"],
-      "@/lib/*": ["./lib/*"],
-      "@/api/*": ["./app/api/*"],
+      "@/*": ["*"],
+      "@mock/*": ["mock/*"],
+      "@components/*": ["components/*"],
+      "@lib/*": ["lib/*"],
+      "@api/*": ["app/api/*"]
     }
   }
 }
