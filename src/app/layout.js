@@ -1,9 +1,10 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import StarrySky from "@/components/StarryskyLayout";
-import ReduxProvider from "@/lib/Provider";
-import ModalManager from "@/components/common/Modal";
+import Providers from "@/lib/Providers";
+// import ModalManager from "@/components/common/Modal";
 const inter = Inter({ subsets: ["latin"] });
+import { getServerSession } from "next-auth";
 
 export const metadata = {
   title: {
@@ -13,15 +14,16 @@ export const metadata = {
   description: "Its Your Own Cinema Archive Web",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const session = await getServerSession();
+
   return (
-    <html lang="en"> 
+    <html lang="en">
       <body className={inter.className}>
-        <ReduxProvider>
-          <StarrySky /> 
-          {children}   
-          <ModalManager />  
-        </ReduxProvider>   
+        <Providers session={session}>
+          <StarrySky />
+          {children}
+        </Providers>
       </body>
     </html>
   );
